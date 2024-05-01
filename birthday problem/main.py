@@ -4,14 +4,6 @@ import matching
 import triplet
 import math
 
-#function doesn't work, just trying to verify article maths values but float too big
-def calcul(n):
-    s = 0
-    m = 365
-    for i in range(math.floor(n/2) + 1):
-        s += math.factorial(m)*math.factorial(n)/(math.factorial(i)*math.factorial(n-2*i)*math.factorial(m-n+i)*2^i*m^n)
-    return 1 - s
-
 
 #returns the empirical probability of the function returning true over the sample "sample"
 def probability(n,sample,function):
@@ -21,22 +13,49 @@ def probability(n,sample,function):
             count += 1
     return (count/sample)
 
-print("Simulations : \n\nCanonical birthday")
+nb = 10000
+print("Simulations : \n\nCanonical birthday,",nb,"simulations")
 for n in [2,3,4,5,10,20,23,30,50]:
-    print("n =",n,"p =", probability(n,10000,canonical.duplicate))
+    p = probability(n,nb,canonical.duplicate)
+    display = "n = " + str(n) + " p = " + str(p)
+    if p != 0:
+        display = display + " intervalle 95: " + str([p-1/(2*math.sqrt(math.sqrt(p*(1-p))*nb)),p+1/(2*math.sqrt(math.sqrt(p*(1-p))*nb))])
 
-print("\n \nStrong birthday")
+    print(display)
+    #print("n =",n,"p =", p, "intervalle 95:",[p-1/(2*math.sqrt(math.sqrt(p*(1-p))*nb)),p+1/(2*math.sqrt(math.sqrt(p*(1-p))*nb))])
+
+nb = 100
+print("\n \nStrong birthday,",nb,"simulations")
 
 for n in [2000,2500,2700,2800,3000,3063,3064,3500,4000,4400]:
-    print("n =",n,"p =", probability(n,100,strong.allshared))
+    p = probability(n,nb,strong.allshared)
+    display = "n = " + str(n) + " p = " + str(p)
+    if p != 0:
+        display = display + " intervalle 95: " + str([p-1/(2*math.sqrt(math.sqrt(p*(1-p))*nb)),p+1/(2*math.sqrt(math.sqrt(p*(1-p))*nb))])
 
-print("\n\nUnrestricted matching problem")
+    print(display)
+
+nb = 20000
+print("\n\nUnrestricted matching problem,",nb,"simulations")
 
 for k in [0,1,2,3,4,5,6]:
-   print("k =",k,"p =", probability(k,20000,matching.match))
+    p = probability(k,nb,matching.match)
+    display = "k = " + str(k) + " p = " + str(p)
+    if p != 0:
+        display = display + " intervalle 95: " + str([p-1/(2*math.sqrt(math.sqrt(p*(1-p))*nb)),p+1/(2*math.sqrt(math.sqrt(p*(1-p))*nb))])
+
+    print(display)
+   
 #triplet values a little lower than article, there must be a problem
-print("\n\nTriplet birthday")
+
+nb = 5000
+print("\n\nTriplet birthday,",nb,"simulations")
 for n in [23,40,60,75,87,88,145]:
-    print("n =",n,"p =", probability(n,5000,triplet.triplet))
+    p = probability(n,nb,triplet.triplet)
+    display = "n = " + str(n) + " p = " + str(p)
+    if p != 0:
+        display = display + " intervalle 95: " + str([p-1/(2*math.sqrt(math.sqrt(p*(1-p))*nb)),p+1/(2*math.sqrt(math.sqrt(p*(1-p))*nb))])
+
+    print(display)
 
 
